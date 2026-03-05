@@ -1,0 +1,9 @@
+name	subprocess	description	phase	category	status	impact
+Importación de Equipos CAT	Validación de facturas	Conciliación de datos registrados en D365 (proveedor, valores, OC, Incoterm) antes de generar el embarque en SII.	Phase B	Value Stream	Active	H
+Importación de Equipos CAT	Integración Logística Int.	Captura automática de datos del Bill of Lading (BL) mediante integración con agentes de carga/forwarders.	Phase B	Business Process	Proposed	M
+Importación de Equipos CAT	Asignación de Licencia	Control de saldos y vencimientos de licencias de importación asociadas al modelo y tipo de equipo.	Phase B	Business Process	Active	H
+Importación de Equipos CAT	Genera Doc. de Transporte	Creación del embarque y asociación de facturas comerciales al BL para el proceso aduanero.	Phase B	Business Process	Active	H
+Importación de Equipos CAT	Ingreso de costos nac.	Registro de gastos de importación (flete, seguro, puerto) según el Incoterm definido de forma flexible.	Phase B	Business Process	Active	H
+Importación de Equipos CAT	Envío de info DI/DAV (Opción 1)	Transmisión electrónica de información mínima para que la agencia (SIACO) genere formularios desde cero.	Phase B	Business Process	Active	H
+Importación de Equipos CAT	Cálculo DI/DAV (Opción 2)	Cálculo interno de tributos y gastos aduaneros basado en la información consolidada del embarque.	Phase B	Business Process	Active	H
+Importación de Equipos CAT	Consolidación de costos	Envío automático de costos finales de nacionalización a Dynamics 365 a nivel de ítem.	Phase B	Value Stream	Validated	H

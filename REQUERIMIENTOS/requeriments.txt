@@ -1,0 +1,17 @@
+Num Req	Proceso	Sub Procesos 	Requerimiento
+15	IMPORTACIÓN DE EQUIPOS CAT	VALIDACIÓN DE FACTURAS	"El proceso incia con el registro de facturas en D365 ( asignación de costos según termino de negociación), El sistema debe permitir generar las referencias con la cantidad de caracteres que traiga la OC, caracteres especiales, mayúsculas y minúsculas,  no debe ser limitante
+Esta informacion cae al SII para poder generar el embarque
+Se requiere una validación previa por medio de un reporte que permita conciliar que  lo registrado en D365 cayó correctamente al SII, esto por medio de un reporte por factura que contenga : CODIGO Y NOMBRE DEL PROVEEDOR - NUMERO Y FECHA DE FACTURA- VALORES DE LA FACTURA - ID - OC- INCOTERM."
+16	IMPORTACIÓN DE EQUIPOS CAT	INTEGRACIÓN LOGISTICA INTERNACIONAL	"El sistema se integra con Logistica internacional  para obtener información del BL.
+"
+17	IMPORTACIÓN DE EQUIPOS CAT	ASIGNACION DE REGISTRO Y/O LICENCIA  DE IMPORTACION 	Que el sistema permita asignar al modelo y tipo del equipo el registro y/o licencia de importación según se requiera, que controle saldos y vencientos
+18	IMPORTACIÓN DE EQUIPOS CAT	GENERA DOCUMENTO DE TRANSPORTE	"El proceso debe ser generados por DEALERS ( VER TABLA 1)
+El sistema permite crear un embarque (documento de transporte) con el cual se va a nacionalizar. A este documento se deben asociar las facturas de la mercancía que ampara ese BL. 
+El sistema debe tener Conexión con FILEZILA ( programa de SIACO) en donde se cargan todas las facturas de importación INV, se conecta para creacion de DO"
+19	IMPORTACIÓN DE EQUIPOS CAT	INGRESO DE COSTOS PARA NACIONALIZACIÓN	El sistema permite agregar a cada embarque gastos de importación según término de negociación Incoterm. 
+20	IMPORTACIÓN DE EQUIPOS CAT	OPCION 1. ENVIO DE INFORMACIÓN MINIMO PARA QUE LA ADUANA GENERE DI Y DAV DESDE CERO	"El sistema debe contar con todos los modulos que tiene la agencia de aduanas para generación de los embarques, declaraciones de importacion y sus respectivos archivos , esto a efectos de asegurar el proceso cuando existan fallas en cualquiera de las compañias.
+Al momento de la generacion de la declaracion de importacion debe permitir crear cualquier modalidad de importacion asi como todos los tipos de declaracion de importacion
+El sistema permite transmitir declaración de importación a Open Comex para solicitar selectividad a la DIAN.   "
+21	IMPORTACIÓN DE EQUIPOS CAT	OPCION 2. CALCULO DI /DAV PARA ADUANA	El sistema permite transmitir declaración de importación a Open Comex para solicitar selectividad a la DIAN.   
+22	IMPORTACIÓN DE EQUIPOS CAT	CONSOLIDACIÓN DE COSTOS	"El sistema permite enviar costos de nacionalización a DYN365 para cada equipo según corresponda. 
+COSTEOS EMBARQUES Y MERCANCIA ( Validar en conjunto com COSTOS) Costo estimado de mercancia ( se carga un 2% por embarque se debe validar en conjunto con COSTOS)"
