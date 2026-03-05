@@ -17,7 +17,7 @@
 | HU-IE-18 | Generación de Documento de Transporte | — | ✅ Completada |
 | HU-IE-19 | Ingreso de Costos de Nacionalización | A, B, C, F, I, P | ✅ Completada |
 | HU-IE-20 | Registro y Persistencia de Tipificación (DI/DAV) | D, P, T | ✅ Completada |
-| HU-IE-22 | Consolidación Final de Costos y Envío a D365 | — | 🔜 Pendiente |
+| HU-IE-22 | Consolidación Final de Costos y Envío a D365 | A, C, I, L, S | ✅ Completada |
 
 ---
 
@@ -190,6 +190,7 @@ Tarea automática programada que el sistema ejecuta periódicamente sin que nadi
 - **Licencia de Importación (VUCE):** Permiso oficial para importar mercancía controlada. (HU-IE-17)
 
 ### Licencia de Importación
+- **Landed Cost:** Costo total del producto puesto en bodega, incluyendo todos los gastos de importación y fletes. (HU-IE-22)
 - **Licencia de Importación:** Documento obligatorio para mercancías con restricciones o usadas (remanufacturadas), tramitado vía VUCE.
 
 ### Log de Sincronización
@@ -335,4 +336,4 @@ Ver: **Código Proveedor D365 / Vendor Account (6 dígitos)**.
 
 ---
 
-*Última actualización: 2026-03-05 | HU procesadas: HU-IE-15-01, HU-IE-15-02, HU-IE-15-03, HU-IE-16, HU-IE-17, HU-IE-18 | Total términos: 52*
+*Última actualización: 2026-03-05 | HU procesadas: HU-IE-15-01, HU-IE-15-02, HU-IE-15-03, HU-IE-16, HU-IE-17, HU-IE-18, HU-IE-19, HU-IE-20, HU-IE-22 | Total términos: 58*
