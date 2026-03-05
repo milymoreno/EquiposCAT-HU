@@ -1,9 +1,9 @@
-# HU-IE-15-01: Sincronización Automática de Facturas desde D365
+# HU-IE-15: Sincronización, Validación de Facturas y Creación de Proveedores
 
 **Proceso:** IMPORTACIÓN DE EQUIPOS CAT  
-**Subproceso:** VALIDACIÓN DE FACTURAS  
-**Requerimiento Original:** REQ-15 — El proceso inicia con el registro de facturas en D365 (asignación de costos según término de negociación). Esta información cae al SII para poder generar el embarque. El sistema debe permitir generar las referencias con la cantidad de caracteres que traiga la OC, caracteres especiales, mayúsculas y minúsculas, no debe ser limitante.  
-**Versión:** 2.0  
+**Subproceso:** VALIDACIÓN DE FACTURAS Y GESTIÓN DE PROVEEDORES  
+**Requerimiento Original:** REQ-15 — El proceso inicia con el registro de facturas en D365 (asignación de costos según término de negociación). El sistema debe permitir generar las referencias con la cantidad de caracteres que traiga la OC, caracteres especiales, mayúsculas y minúsculas. Debe migrar el código de proveedor al de 6 dígitos (D365) y permitir la creación automática de proveedores.  
+**Versión:** 3.0 (Consolidada)  
 **Fecha de revisión:** 2026-03-05  
 **Estado:** Revisada con base en sesión de levantamiento (02-Mar-2026)
 
@@ -12,161 +12,94 @@
 ## Historia de Usuario
 
 ### Como:
-Sistema SII 2.0
+Analista de Comercio Exterior / Sistema SII 2.0
 
 ### Quiero:
-Sincronizar automáticamente las facturas registradas en D365 al SII, utilizando como identificador oficial el código de proveedor de Dynamics 365 (6 dígitos), sin limitación en la longitud ni tipo de caracteres de las referencias.
+Sincronizar automáticamente las facturas de D365, validar su correcta recepción mediante reportes de conciliación y asegurar que los proveedores se creen o actualicen usando el código oficial de 6 dígitos de Dynamics.
 
 ### Para:
-Que las facturas estén disponibles en el SII para el proceso de generación de embarques y nacionalización, con datos íntegros y sin necesidad de intervención manual.
+Eliminar la dependencia de tablas de mapeo manuales, asegurar la integridad de los datos logísticos y financieros desde el inicio del proceso y permitir la generación fluida de los embarques de nacionalización.
 
 ---
 
 ## Contexto del Proceso (As-Is)
 
-1. Las facturas se registran manualmente en **D365** con sus respectivos **Cargos** (fletes, seguros, INLAND, etc.) según el INCOTERM acordado con el proveedor.
-2. D365 sincroniza periódicamente la información al SII mediante un proceso automático (job/scheduler).
-3. El SII actual usa un **código proveedor de 3 dígitos** (código SII legado). Ej: Caterpillar = `021`.
-4. D365 usa un **código proveedor de 6 dígitos** (vendor account). Ej: Caterpillar = `221372`.
-5. Actualmente existe una **tabla de mapeo** entre los dos códigos, administrada manualmente, que genera complejidad operativa y riesgo de inconsistencia.
-6. Al consultar facturas en el sistema actual, el usuario puede buscar por rango de fechas y proveedor; el resultado se visualiza una a una o en forma de listado.
-7. El proceso opera para múltiples compañías (no solo compañía 001 / GColza).
+1. Las facturas se registran en **D365** con cargos (fletes, seguros, INLAND) según el INCOTERM.
+2. El sistema actual usa códigos de proveedor de 3 dígitos y una **tabla de mapeo** manual hacia los 6 dígitos de D365, lo cual genera errores y lentitud.
+3. El equipo de Comex realiza una conciliación manual (usualmente apoyada en archivos Excel) para verificar que lo registrado en D365 coincida con lo que el SII recibió.
+4. Si un proveedor no existe en el SII, la factura se bloquea y requiere registro manual por parte del área de TI o coordinadores.
 
 ---
 
 ## Descripción Funcional
 
-El sistema debe:
+El requerimiento 15 se desglosa en tres capacidades críticas:
 
-1. **Ejecutar periódicamente la sincronización** de facturas registradas en D365 hacia el SII, mediante integración por API (sin acceso directo a base de datos de D365).
-2. **Validar la clave de unicidad** de cada factura antes de insertarla (Número de factura + Fecha).
-3. **Almacenar los campos de la factura** tal como vienen de D365, sin truncar caracteres en ningún campo de referencia (número de factura, OC).
-4. **Usar el código de proveedor D365 (6 dígitos)** como identificador oficial, eliminando la dependencia de la tabla de mapeo SII-D365.
-5. **Si el proveedor no existe en SII 2.0**, crearlo automáticamente con datos mínimos (ver HU-IE-15-03).
-6. **Registrar en log** el resultado de cada ejecución: insertados, rechazados, duplicados y motivo de rechazo.
-7. **Permitir monitoreo** del estado de las sincronizaciones desde el SII.
+### 1. Sincronización Automática (Backend)
+- Ejecución periódica vía API para traer facturas nuevas.
+- Almacenamiento íntegro de referencias (OC, Factura) sin truncamiento de caracteres especiales o longitudes extendidas.
+- Registro en log de cada evento (insertado, duplicado, rechazado).
+
+### 2. Consulta y Validación (Reporte de Conciliación)
+- El sistema debe ofrecer una pantalla de consulta con filtros por **Proveedor, Factura, Fecha y ID Equipo**.
+- Debe permitir comparar los valores de D365 vs SII.
+- Debe incluir campos críticos: Código/Nombre Proveedor, Número Factura, Valor, OC, ID Equipo e INCOTERM.
+- Opción de exportación a Excel para auditorías rápidas.
+
+### 3. Gestión y Creación de Proveedores
+- Uso exclusivo del **código D365 de 6 dígitos**.
+- **Creación automática**: Si llega una factura de un proveedor inexistente, el sistema lo crea con datos mínimos (Nombre, País, Código) y lo marca como "Datos Incompletos".
+- Permite la complementación manual de datos (NIT, dirección) directamente en el SII con trazabilidad.
 
 ---
 
 ## Criterios de Aceptación (Gherkin)
 
-### Escenario 1 – Sincronización exitosa
+### Escenario 1 – Sincronización y Creación de Proveedor
 ```gherkin
-Dado que existen facturas nuevas en D365
-Cuando se ejecute el servicio de sincronización periódica
-Entonces el sistema debe registrarlas correctamente en SII
-  Y el código de proveedor almacenado debe ser el código D365 de 6 dígitos
-  Y el log debe reflejar estado Exitoso con total de registros insertados.
+Dado que llega una factura de D365 con código de proveedor 221372 que NO existe en el SII
+Cuando se ejecute la sincronización automática
+Entonces el sistema debe crear al proveedor automáticamente con sus datos mínimos
+  Y debe registrar la factura exitosamente asociándola al nuevo código de 6 dígitos.
 ```
 
-### Escenario 2 – Factura duplicada (mismo número + misma fecha)
+### Escenario 2 – Validación mediante Reporte
 ```gherkin
-Dado que una factura con la misma combinación número + fecha ya existe en SII
-Cuando llegue nuevamente desde D365
-Entonces no debe cargarse ni sobrescribirse
-  Y debe registrarse en log como duplicada con motivo explícito.
+Dado que el analista necesita conciliar las facturas del día
+Cuando acceda al módulo de "Consulta y Validación de Facturas"
+Entonces el sistema debe mostrar el listado con los campos: Proveedor, Factura, Valor, OC, ID Equipo e INCOTERM
+  Y debe permitir exportar esta información para compararla con los reportes de D365.
 ```
 
-### Escenario 3 – Factura de año anterior ya migrada
+### Escenario 3 – Manejo de Referencias Especiales
 ```gherkin
-Dado que una factura pertenece a un año anterior y ya fue procesada previamente
-Cuando llegue nuevamente en la sincronización
-Entonces el sistema no debe procesarla automáticamente.
-```
-
-### Escenario 4 – Factura con misma referencia pero nueva fecha
-```gherkin
-Dado que una factura tiene el mismo número pero una fecha diferente
-Cuando se ejecute la sincronización
-Entonces debe registrarse como un nuevo documento válido.
-```
-
-### Escenario 5 – Error en el servicio de sincronización
-```gherkin
-Dado que el servicio falle durante la ejecución
-Cuando el usuario consulte el monitoreo
-Entonces debe reflejar estado Fallido con detalle técnico del error.
-```
-
-### Escenario 6 – Referencia con caracteres especiales y longitud extendida
-```gherkin
-Dado que una OC o número de factura contiene caracteres especiales, mayúsculas, minúsculas o longitud extendida
-Cuando se sincronice desde D365
-Entonces el sistema debe almacenarla sin truncamiento ni modificación de ningún carácter.
-```
-
-### Escenario 7 – Proveedor inexistente en SII durante sincronización
-```gherkin
-Dado que una factura llega con un código de proveedor no registrado en SII 2.0
-Cuando se procese la sincronización
-Entonces el sistema debe crear automáticamente el proveedor con datos mínimos
-  Y continuar el proceso de sincronización de la factura sin interrumpirlo.
+Dado que una Orden de Compra tiene 45 caracteres y símbolos como "/" o "-"
+Cuando se sincronice al SII
+Entonces el sistema debe guardarla exactamente igual, sin truncar ni cambiar el formato.
 ```
 
 ---
 
-## Reglas de Negocio
+## Reglas de Negocio Clave
 
-| ID    | Regla |
-|-------|-------|
-| RN-01 | La clave de unicidad de una factura es: **Número de factura + Fecha**. No se permite carga duplicada con la misma combinación. |
-| RN-02 | Las facturas de años anteriores ya migradas no deben reprocesarse automáticamente. |
-| RN-03 | Si una factura llega con el mismo número pero distinta fecha, se trata como un nuevo registro válido. |
-| RN-04 | El sistema debe usar el **código proveedor D365 (6 dígitos)** como identificador oficial. La tabla de mapeo SII-D365 queda obsoleta. |
-| RN-05 | Ningún campo de referencia (número de factura, OC) debe truncarse. El sistema debe admitir cualquier longitud y tipo de carácter. |
-| RN-06 | Si el proveedor no existe en SII 2.0 al momento de la sincronización, debe crearse automáticamente con datos mínimos (código D365, nombre, país, estado activo). |
-| RN-07 | La sincronización debe soportar múltiples compañías; no se limita a la compañía 001. |
-| RN-08 | La integración debe realizarse exclusivamente por API; no se permite acceso directo a la base de datos de D365. |
+| ID | Regla |
+| :--- | :--- |
+| **RN-01** | La clave de unicidad es **Número de Factura + Fecha**. |
+| **RN-02** | El **Código de 6 dígitos (Vendor Account)** es el identificador único oficial. La tabla de 3 dígitos queda obsoleta. |
+| **RN-03** | La creación automática de proveedores no detiene la carga de facturas. |
+| **RN-04** | El sistema debe soportar **múltiples compañías** (GColza, etc.). |
+| **RN-05** | Los datos del proveedor se sincronizan **unidireccionalmente** (D365 -> SII). |
 
 ---
 
-## Información a Sincronizar por Factura
+## Pendientes Identificados
 
-| Campo | Descripción | Observación |
-|-------|-------------|-------------|
-| Compañía | Código de compañía en D365 | Ej: 001, 021 |
-| Código proveedor D365 | Vendor account (6 dígitos) | Fuente oficial en SII 2.0 |
-| Nombre proveedor | Nombre oficial del proveedor | |
-| Número de factura | Referencia de la factura en D365 | Sin límite de caracteres ni tipo |
-| Fecha factura | Fecha de emisión | |
-| Valor total factura | Valor total en moneda de la factura | |
-| INCOTERM | Término de negociación internacional | Ej: DPU, CFR, CIF, FOB |
-| Moneda | Moneda de la factura | |
-| ID Equipo | Identificador del equipo CAT | |
-| Orden de Compra (OC) | Referencia OC asociada | Sin límite de caracteres ni tipo |
-| Valor equipo | Costo del equipo | |
-| Valor fletes | Costo de flete | |
-| Valor seguros | Costo de seguro | |
-| Valor INLAND | Transporte terrestre en destino | |
-| Valor otros | Otros costos adicionales | |
-
----
-
-## Monitoreo de Sincronización
-
-El sistema debe permitir visualizar:
-
-- Fecha y hora de la última sincronización.
-- Cantidad de registros procesados.
-- Cantidad de errores.
-- Cantidad de duplicados.
-- Estado: **Exitosa / Parcial / Fallida**.
-
----
-
-## Pendientes / Compromisos Identificados en Sesión
-
-| # | Compromiso | Responsable |
-|---|-----------|-------------|
-| 1 | Validar la estructura de campos requeridos para crear el proveedor en SII 2.0 (NIT, dirección, teléfono, etc.) | Fabiani / Comercio Exterior |
-| 2 | Confirmar si el cambio de código de proveedor afecta interfaces existentes hacia sistemas externos | Cheche / TI |
-| 3 | Definir proceso de migración del código de proveedor histórico (SII 3 dígitos → D365 6 dígitos) | Equipo técnico con Daisy |
+1. Definir con Daisy la estructura mínima de campos de proveedor para la creación automática (NIT, Dirección, etc.).
+2. Validar impacto en interfaces externas por el cambio de 3 a 6 dígitos en el código de proveedor.
 
 ---
 
 ## Notas Técnicas
-
-- La sincronización opera con un job/scheduler periódico; no es un proceso disparado manualmente por el usuario.
-- El código D365 de 6 dígitos es **bidireccional**: se usa tanto al recibir la factura como en la declaración de importación (DI) que se transmite a la DIAN.
-- Los "Cargos" en D365 (fletes, seguros, INLAND) son asignados al momento de registrar la factura y determinan el costo total del embarque.
-- El sistema actual (S400/v1) usaba la tabla de mapeo SII-D365; esta tabla **queda obsoleta** en SII 2.0.
+- Implementación vía API REST con seguridad OAuth2.
+- Registro de logs detallado para auditoría de sincronización.
+- Opción de reintento para facturas que quedaron en estado "Fallido" o "Parcial".
