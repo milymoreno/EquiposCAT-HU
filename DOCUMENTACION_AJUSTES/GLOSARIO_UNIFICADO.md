@@ -9,10 +9,11 @@
 
 | HU | Proceso | Términos aportados | Estado |
 |----|---------|-------------------|--------|
-| HU-IE-15-01 | Sincronización Automática de Facturas | A, B, C, D, E, G, I, J, L, M, N, O, P, S, T, V | ✅ Completada |
-| HU-IE-15-02 | Consulta y Validación de Facturas | A, B, C, E, f, G, I, M, P, R, S | ✅ Completada |
-| HU-IE-15-03 | Creación Automática de Proveedores | C, D, E, M, P, S, T, V | ✅ Completada |
-| HU-IE-16 | Integración con Logística Internacional | A, B, E, I, P, V | ✅ Completada |
+| HU-IE-15-01 | Sincronización Automática | A, B, C, D, E, G, I, J, L, M, N, O, P, S, T, V | ✅ Completada |
+| HU-IE-15-02 | Consulta y Validación | A, B, C, E, f, G, I, M, P, R, S | ✅ Completada |
+| HU-IE-15-03 | Creación de Proveedores | C, D, E, M, P, S, T, V | ✅ Completada |
+| HU-IE-16 | Integración con Logística | — | 🔜 Pendiente |
+E, I, P, V | ✅ Completada |
 | HU-IE-17 | Asignación de Registro/Licencia de Importación | — | 🔜 Pendiente |
 | HU-IE-18 | Generación de Documento de Transporte | — | 🔜 Pendiente |
 | HU-IE-19 | Ingreso de Costos de Nacionalización | — | 🔜 Pendiente |

@@ -1,9 +1,20 @@
-# HU-IE-15-01 — Glosario de Términos de Negocio (Estilo Dummies)
+# HU-IE-15 — Glosario de Términos de Negocio (REQ-15)
 
-**Aplica a:** HU-IE-15-01 – Sincronización Automática de Facturas desde D365  
-**Fecha:** 2026-03-05
+**Aplica a:** HU-IE-15 – Sincronización, Validación y Creación de Proveedores  
+**Fecha:** 2026-03-05  
 
-> Este glosario explica cada término de negocio en lenguaje sencillo para que cualquier persona (sin importar su área) pueda entender de qué se habla en la historia de usuario.
+> Glosario consolidado para el requerimiento 15, cubriendo la fase inicial de carga de facturas y gestión de proveedores.
+
+---
+
+### Términos de Proceso
+
+- **Código D365 (Vendor Account):** Identificador único de 6 dígitos que viene del sistema financiero. Es el "nombre oficial" del proveedor para contabilidad.
+- **Conciliación de Facturas:** Proceso de comparar lo que dice Dynamics (D365) con lo que se tiene en el SII para asegurar que no falte nada antes de nacionalizar.
+- **Creación Automática:** Capacidad del sistema de dar de alta a un proveedor nuevo en cuanto llega su primera factura, sin esperar a un registro manual.
+- **Incoterm:** Términos de comercio internacional (FOB, CIF, CFR) que definen hasta dónde paga el proveedor y desde dónde paga GColza.
+- **Sincronización Unidireccional:** El flujo de datos va de D365 hacia el SII. Cualquier cambio maestro debe hacerse en D365.
+- **Unicidad (Factura + Fecha):** Regla que evita que una factura se cargue dos veces, a menos que tenga una fecha distinta (re-emisión).
 
 ---
 
