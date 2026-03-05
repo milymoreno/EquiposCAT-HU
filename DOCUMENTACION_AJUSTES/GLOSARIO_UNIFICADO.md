@@ -13,8 +13,8 @@
 | HU-IE-15-02 | Consulta y Validación | A, B, C, E, f, G, I, M, P, R, S | ✅ Completada |
 | HU-IE-15-03 | Creación de Proveedores | C, D, E, M, P, S, T, V | ✅ Completada |
 | HU-IE-16 | Integración con Logística | B, D, G, P | ✅ Completada |
-| HU-IE-17 | Asignación de Registro/Licencia | C, L, R, S, V | ✅ Completada |
-| HU-IE-18 | Generación de Documento de Transporte | D, F, G, H, P | ✅ Completada |
+| HU-IE-17 | Asignación de Registro/Licencia de Importación | L, R, V | ✅ Completada |
+| HU-IE-18 | Generación de Documento de Transporte | — | ✅ Completada |
 | HU-IE-19 | Ingreso de Costos de Nacionalización | — | 🔜 Pendiente |
 | HU-IE-20 | Registro y Persistencia de Tipificación (DI/DAV) | — | 🔜 Pendiente |
 | HU-IE-22 | Consolidación Final de Costos y Envío a D365 | — | 🔜 Pendiente |
@@ -117,6 +117,9 @@ Situación en que una factura llega dos veces con el mismo número **y** la mism
 Documento maestro que agrupa varias facturas bajo un mismo BL. Es la unidad de proceso para la nacionalización. Las facturas sincronizadas se asocian a un embarque para tramitar la importación ante la aduana.  
 📌 *Aplica a: HU-IE-15-01, HU-IE-18*
 
+### Validación
+- **Validación:** Proceso de verificar que los datos de las facturas coincidan con las reglas de negocio.
+
 ---
 
 ## G
@@ -172,9 +175,15 @@ Tarea automática programada que el sistema ejecuta periódicamente sin que nadi
 ### Licencia de Importación (VUCE)
 - **Licencia de Importación (VUCE):** Permiso oficial para importar mercancía controlada. (HU-IE-17)
 
+### Licencia de Importación
+- **Licencia de Importación:** Documento obligatorio para mercancías con restricciones o usadas (remanufacturadas), tramitado vía VUCE.
+
 ### Log de Sincronización
 Registro automático que guarda todo lo ocurrido durante cada ejecución del proceso de sincronización: cuántas facturas llegaron, cuántas se insertaron, cuántas se rechazaron y por qué. Sirve para auditoría, detección de problemas y trazabilidad operativa.  
 📌 *Aplica a: HU-IE-15-01*
+
+### Logística Internacional
+- **Logística Internacional:** Conjunto de procesos de transporte y manejo de carga desde origen hasta destino final.
 
 ---
 
@@ -220,6 +229,19 @@ Sistema externo (de la agencia de aduanas) al que el SII transmite las declaraci
 Empresa que vende y exporta los equipos CAT. En este proceso, el proveedor principal es Caterpillar Inc. y sus subsidiarias. Se identifica por su código D365 (6 dígitos). El término "exportador" también se usa para referirse al proveedor en el contexto del embarque.  
 📌 *Aplica a: HU-IE-15-01, HU-IE-15-03*
 
+### Proveedor
+- **Proveedor:** Persona o empresa que suministra los equipos (ej. Caterpillar SARL).
+
+---
+
+## R
+
+### Registro de Importación
+- **Registro de Importación:** Documento para mercancías de libre importación que requieren control previo pero no licencia.
+
+### Remanufacturado
+- **Remanufacturado:** Equipo usado reconstruido por el fabricante; requiere controles aduaneros y licencias especiales.
+
 ---
 
 ## S
@@ -232,7 +254,8 @@ Sistema de Información de Importaciones. Sistema propio que gestiona los proces
 **Versión anterior:** S400 / SII v1 (sistema legado en reemplazo).  
 📌 *Aplica a: todas las HUs*
 
----
+### SII (Sistema Integral de Importaciones)
+- **SII (Sistema Integral de Importaciones):** Aplicativo donde se gestiona el flujo de nacionalización.
 
 ### Sincronización (automática de facturas)
 Proceso automático mediante el cual el SII trae las facturas registradas en D365 sin intervención manual. Ocurre periódicamente (job programado). Es el punto de partida del proceso de importación de equipos CAT en el nuevo SII 2.0.  
