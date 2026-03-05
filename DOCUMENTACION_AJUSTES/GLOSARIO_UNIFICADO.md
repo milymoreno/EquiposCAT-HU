@@ -10,9 +10,9 @@
 | HU | Proceso | Términos aportados | Estado |
 |----|---------|-------------------|--------|
 | HU-IE-15-01 | Sincronización Automática de Facturas | A, B, C, D, E, G, I, J, L, M, N, O, P, S, T, V | ✅ Completada |
-| HU-IE-15-02 | Consulta y Validación de Facturas | A, B, C, E, F, G, I, M, P, R, S | ✅ Completada |
-| HU-IE-15-03 | Creación Automática de Proveedores | — | 🔜 Pendiente |
-| HU-IE-16 | Integración con Logística Internacional | — | 🔜 Pendiente |
+| HU-IE-15-02 | Consulta y Validación de Facturas | A, B, C, E, f, G, I, M, P, R, S | ✅ Completada |
+| HU-IE-15-03 | Creación Automática de Proveedores | C, D, E, M, P, S, T, V | ✅ Completada |
+| HU-IE-16 | Integración con Logística Internacional | A, B, E, I, P, V | ✅ Completada |
 | HU-IE-17 | Asignación de Registro/Licencia de Importación | — | 🔜 Pendiente |
 | HU-IE-18 | Generación de Documento de Transporte | — | 🔜 Pendiente |
 | HU-IE-19 | Ingreso de Costos de Nacionalización | — | 🔜 Pendiente |
@@ -255,4 +255,4 @@ Ver: **Código Proveedor D365 / Vendor Account (6 dígitos)**.
 
 ---
 
-*Última actualización: 2026-03-05 | HU procesadas: HU-IE-15-01, HU-IE-15-02 | Total términos: 36*
+*Última actualización: 2026-03-05 | HU procesadas: HU-IE-15-01, HU-IE-15-02, HU-IE-15-03, HU-IE-16 | Total términos: 46*
