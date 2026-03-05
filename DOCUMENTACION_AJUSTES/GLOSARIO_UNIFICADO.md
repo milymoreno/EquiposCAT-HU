@@ -14,12 +14,16 @@
 | HU-IE-15-03 | Creación de Proveedores | C, D, E, M, P, S, T, V | ✅ Completada |
 | HU-IE-16 | Integración con Logística | B, D, G, P | ✅ Completada |
 | HU-IE-17 | Asignación de Registro/Licencia | C, L, R, S, V | ✅ Completada |
-| HU-IE-18 | Generación de Documento de Transporte | — | 🔜 Pendiente |
+| HU-IE-18 | Generación de Documento de Transporte | D, F, G, H, P | ✅ Completada |
 | HU-IE-19 | Ingreso de Costos de Nacionalización | — | 🔜 Pendiente |
 | HU-IE-20 | Registro y Persistencia de Tipificación (DI/DAV) | — | 🔜 Pendiente |
 | HU-IE-22 | Consolidación Final de Costos y Envío a D365 | — | 🔜 Pendiente |
 
 ---
+
+## F
+### FOB (Free On Board)
+- **FOB (Free On Board):** Valor de mercancía en origen sin fletes ni seguros. (HU-IE-18)
 
 ## R
 ### Remanufacturado (Reman)
@@ -77,6 +81,9 @@ Código que identifica a cada empresa del grupo en D365. Ejemplo: GColza = `001`
 
 ## D
 
+### Declaración de Importación (DI)
+- **Declaración de Importación (DI):** Documento legal ante aduana para nacionalizar. (HU-IE-18)
+
 ### Dealer (Distribuidor/Destino)
 - **Dealer (Distribuidor/Destino):** Código técnico que identifica el destino final o puerto de llegada (ej: R490). (HU-IE-16)
 
@@ -113,6 +120,9 @@ Documento maestro que agrupa varias facturas bajo un mismo BL. Es la unidad de p
 ---
 
 ## G
+
+### Guía (HBL)
+- **Guía (HBL):** Documento interno que agrupa facturas y BL para nacionalización. (HU-IE-18)
 
 ### Guía
 - **Guía:** Número identificador del viaje de la mercancía (sinónimo de BL). (HU-IE-16)
@@ -199,6 +209,9 @@ Sistema externo (de la agencia de aduanas) al que el SII transmite las declaraci
 ---
 
 ## P
+
+### Peso Bruto
+- **Peso Bruto:** Peso total de mercancía incluyendo empaques. (HU-IE-18)
 
 ### Puerto de Llegada
 - **Puerto de Llegada:** Lugar físico de recepción, asignado automáticamente por el Dealer. (HU-IE-16)
