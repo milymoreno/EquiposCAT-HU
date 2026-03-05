@@ -3,9 +3,9 @@
 **Proceso:** IMPORTACIÓN DE EQUIPOS CAT  
 **Subproceso:** GENERACIÓN DOCUMENTO DE TRANSPORTE  
 **Requerimiento Original:** REQ-18 — Permite crear un embarque (documento de transporte) asociando facturas y BL.  
-**Versión:** 2.0  
+**Versión:** 3.0  
 **Fecha de revisión:** 2026-03-05  
-**Estado:** Revisada con base en sesión de levantamiento (02-Mar-2026)
+**Estado:** Actualizada con detalles de interfaz visual (Notas de Reunión).
 
 ---
 
@@ -15,21 +15,26 @@
 Analista de Comercio Exterior
 
 ### Quiero:
-Generar un documento de transporte (Guía/HBL) en el SII 2.0, asociando el número de BL (recibido de Logística) con las facturas (sincronizadas de D365).
+Generar un documento de transporte (Guía/HBL) en el SII 2.0, validando explícitamente las cantidades de facturas Z95 e INV antes de la confirmación final.
 
 ### Para:
-Formalizar el embarque en el sistema, consolidar los pesos y unidades, y habilitar los pasos posteriores de asignación de licencias y generación de la Declaración de Importación (DI).
+Garantizar que el embarque físico coincida con la documentación contable y logística, evitando descuadres en los totales de la nacionalización.
 
 ---
 
-## Proceso de Generación
+## Proceso de Generación (Detalle Visual)
 
-1. **Selección de Insumos**: El usuario selecciona el **Número de BL + Dealer** (llave de integración).
-2. **Asociación de Facturas**: Se listan las facturas sincronizadas asociadas a ese proveedor y BL. El usuario confirma cuáles pertenecen a esta guía específica.
-3. **Consolidación de Datos**:
-   - El sistema suma automáticamente: Total FOB, Total Unidades y Peso Bruto.
-   - Estos datos deben coincidir con la información reportada por Logística Internacional.
-4. **Asignación de Estado**: La guía se crea inicialmente en estado **Borrador**.
+1. **Pantalla de Confirmación de Insumos**: Antes de generar la guía, el sistema presenta un modal/ventana de validación de cantidades acumuladas:
+   - **Cantidades Z95**: Sumatoria de unidades en facturas origen (Ej: 6 unidades).
+   - **Cantidades INV**: Sumatoria de unidades en facturas de venta PSC (Ej: 6 unidades).
+   - El usuario debe confirmar estar seguro de generar la guía (S/N).
+2. **Resumen de Valores Totales**: Una vez confirmada, se visualiza el resumen de la guía generada:
+   - **Número de la Guía**: Identificador HBL (Ej: H559855).
+   - **Dealer Code**: Código asignado (Ej: R48E).
+   - **Número de líneas**: Total de ítems únicos (Ej: 155).
+   - **Total cantidades**: Volumen total de piezas (Ej: 925).
+   - **Valor guía**: Valor monetario total (Ej: 45,381.53).
+3. **Cierre**: El usuario termina el proceso (F3/Terminar).
 
 ---
 
@@ -37,47 +42,23 @@ Formalizar el embarque en el sistema, consolidar los pesos y unidades, y habilit
 
 | ID | Regla |
 | :--- | :--- |
-| **RN-01** | **Unicidad**: La combinación de Número de Guía + Compañía es única. |
-| **RN-02** | **Integridad del BL**: No se puede generar una guía sin un BL válido previamente registrado/recibido (REQ-16). |
-| **RN-03** | **Exclusividad de Facturas**: Una factura solo puede estar asociada a una guía activa a la vez. |
-| **RN-04** | **Restricción de Edición**: Una vez la guía cambia a estado "Confirmada" o tiene una "Declaración Generada", no permite eliminar o agregar facturas. |
-| **RN-05** | **Validación de Dealer**: El Dealer debe corresponder a la compañía y al puerto de llegada identificado en el BL. |
-
----
-
-## Flujo de Estados de la Guía
-
-El sistema debe controlar el ciclo de vida de la guía mediante los siguientes estados:
-
-1. **Borrador**: Creación inicial y asociación de facturas.
-2. **Confirmada**: Datos verificados, lista para asignación de licencia.
-3. **Licencia Asignada**: (Si aplica) Se ha vinculado el Registro/Licencia (REQ-17).
-4. **Declarada**: Se ha generado la DI y se tiene número de aceptación.
-5. **Consolidada**: Los costos de nacionalización han sido aplicados (REQ-22).
-6. **Cerrada**: Proceso finalizado.
+| **RN-01** | **Validación de Cantidades**: No se permite generar la guía si las cantidades totales de Z95 e INV presentan discrepancias insalvables según parametrización. |
+| **RN-02** | **Confirmación Explícita**: El sistema debe requerir una confirmación antes de la persistencia final del HBL. |
+| **RN-03** | **Visualización de Resumen**: Es obligatorio mostrar el valor total de la guía y el conteo de líneas antes de finalizar. |
 
 ---
 
 ## Criterios de Aceptación (Gherkin)
 
-### Escenario 1 – Asociación Exitosa
+### Escenario 1 – Confirmación de Cantidades
 ```gherkin
-Dado que el analista selecciona el BL 'XYZ123' y el Dealer 'R490'
-Cuando asocie las facturas 'F-001' y 'F-002'
-Entonces el sistema debe calcular el Peso Bruto Total
-  Y crear la guía en estado Borrador.
-```
-
-### Escenario 2 – Bloqueo por Factura Duplicada
-```gherkin
-Dado que la factura 'F-001' ya está asociada a la Guía 'G-008'
-Cuando el analista intente asociarla a una nueva Guía
-Entonces el sistema debe mostrar una alerta: "Factura ya asociada a la Guía G-008" 
-  Y bloquear la acción.
+Dado que el analista tiene 6 unidades en Z95 y 6 en INV
+Cuando presione "F10: Confirmar" en la ventana de validación
+Entonces el sistema debe proceder a generar el documento H559855.
 ```
 
 ---
 
 ## Notas Técnicas
-- **Interfaz**: Debe utilizar los componentes de búsqueda transversal de facturas desarrollados en el REQ-15.
-- **Persistencia**: Impacta tablas SIPIDYNL1, SIPIDYNL2 y SIPOVLR3 (específicas de Equipos).
+- **Interfaz**: Reflejar el diseño mostrado en las capturas de pantalla (Sistema de Importaciones - Forma 03).
+- **Tablas**: SIP_GUIAS_HBL y SIP_GUIA_FACTURAS.

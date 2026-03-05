@@ -105,11 +105,21 @@ CREATE TABLE sip_guias_hbl (
     updated_at        TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Relación Guía x Facturas (N:M)
+-- Relación Guía x Facturas (N:M - Resumen)
 CREATE TABLE sip_guia_facturas (
     guia_id    INT REFERENCES sip_guias_hbl(id),
     factura_id INT REFERENCES sip_facturas(id),
     PRIMARY KEY (guia_id, factura_id)
+);
+
+-- Detalle Granular de Guía (Soporta Parcialización - REQ-31)
+CREATE TABLE sip_guia_detalles (
+    id               SERIAL PRIMARY KEY,
+    guia_id          INT NOT NULL REFERENCES sip_guias_hbl(id),
+    factura_det_id   INT NOT NULL REFERENCES sip_factura_detalles(id),
+    cantidad_guia    INT NOT NULL, -- Permite parcializar unidades de la factura_det originale
+    created_at       TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE (guia_id, factura_det_id)
 );
 
 -- =====================
@@ -174,15 +184,29 @@ CREATE TABLE sip_costos_equipos_det (
 -- MÓDULO 5: CONSOLIDACIÓN Y ERP (REQ-22)
 -- =====================
 
--- Log de Envío a D365
+-- Log de Envío a D365 y Gestión de Errores (REQ-15-04 / REQ-22)
 CREATE TABLE sip_interfaz_erp_logs (
     id                SERIAL PRIMARY KEY,
-    guia_id           INT NOT NULL REFERENCES sip_guias_hbl(id),
-    fecha_envio       TIMESTAMPTZ DEFAULT NOW(),
-    estado_erp        VARCHAR(20) CHECK (estado_erp IN ('Exitoso', 'Error', 'Pendiente')),
+    guia_id           INT REFERENCES sip_guias_hbl(id),
+    factura_id        INT REFERENCES sip_facturas(id), -- Para errores de carga masiva
+    fecha_proceso     TIMESTAMPTZ DEFAULT NOW(),
+    estado_erp        VARCHAR(20) CHECK (estado_erp IN ('Exitoso', 'Error', 'Pendiente', 'Sin Licencia', 'Referencia sin Costo')),
+    tipo_interfaz     VARCHAR(20) CHECK (tipo_interfaz IN ('Z95', 'INV+Z95', 'OC')),
     mensaje_respuesta TEXT,
     payload_json      JSONB,
+    responsable_asig  VARCHAR(100), -- Deisy Rincón / Fabian Barragán
     created_at        TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Tabla para correcciones de 5 campos específicos de las INV (REQ-15-04)
+CREATE TABLE sip_facturas_inv_ajustes (
+    id               SERIAL PRIMARY KEY,
+    factura_id       INT NOT NULL REFERENCES sip_facturas(id),
+    campo_nombre     VARCHAR(50), -- Uno de los 5 campos permitidos
+    valor_anterior   TEXT,
+    valor_nuevo      TEXT,
+    usuario_ajuste   VARCHAR(100),
+    fecha_ajuste     TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- =====================
