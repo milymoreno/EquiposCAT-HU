@@ -15,13 +15,22 @@
 | HU-IE-16 | Integración con Logística | B, D, G, P | ✅ Completada |
 | HU-IE-17 | Asignación de Registro/Licencia de Importación | L, R, V | ✅ Completada |
 | HU-IE-18 | Generación de Documento de Transporte | — | ✅ Completada |
-| HU-IE-19 | Ingreso de Costos de Nacionalización | — | 🔜 Pendiente |
-| HU-IE-20 | Registro y Persistencia de Tipificación (DI/DAV) | — | 🔜 Pendiente |
+| HU-IE-19 | Ingreso de Costos de Nacionalización | A, B, C, F, I, P | ✅ Completada |
+| HU-IE-20 | Registro y Persistencia de Tipificación (DI/DAV) | D, P, T | ✅ Completada |
 | HU-IE-22 | Consolidación Final de Costos y Envío a D365 | — | 🔜 Pendiente |
 
 ---
 
 ## F
+### Base Imponible
+- **Base Imponible:** Valor sobre el cual se gravan los impuestos. En importaciones: FOB + fletes + seguros. (HU-IE-19)
+
+### DAV (Declaración Andina de Valor)
+- **DAV (Declaración Andina de Valor):** Documento soporte de la declaración de importación que justifica el valor en aduana. (HU-IE-20)
+
+### DI (Declaración de Importación)
+- **DI (Declaración de Importación):** Documento oficial mediante el cual se formaliza la introducción de mercancías al país. (HU-IE-20)
+
 ### FOB (Free On Board)
 - **FOB (Free On Board):** Valor de mercancía en origen sin fletes ni seguros. (HU-IE-18)
 
@@ -53,6 +62,7 @@ Documento que emite la naviera certificando que la mercancía fue embarcada en e
 ## C
 
 ### Consumo Atómico
+- **Consolidación:** Proceso final donde se aplican todos los costos reales a la mercancía antes de cerrar el ciclo en D365.
 - **Consumo Atómico:** Operación que se completa 100% o se anula para evitar errores de saldo. (HU-IE-17)
 
 ### Cargos (en D365)
@@ -118,11 +128,15 @@ Documento maestro que agrupa varias facturas bajo un mismo BL. Es la unidad de p
 📌 *Aplica a: HU-IE-15-01, HU-IE-18*
 
 ### Validación
+- **Tipificación:** Proceso de clasificar un equipo bajo una categoría específica (ej. Activo Fijo) para efectos contables. (HU-IE-20)
 - **Validación:** Proceso de verificar que los datos de las facturas coincidan con las reglas de negocio.
 
 ---
 
 ## G
+
+### HBL (House Bill of Lading)
+- **HBL (House Bill of Lading):** Documento de transporte emitido por un agente de carga; es la "guía" interna del proceso. (HU-IE-18)
 
 ### Guía (HBL)
 - **Guía (HBL):** Documento interno que agrupa facturas y BL para nacionalización. (HU-IE-18)
@@ -321,4 +335,4 @@ Ver: **Código Proveedor D365 / Vendor Account (6 dígitos)**.
 
 ---
 
-*Última actualización: 2026-03-05 | HU procesadas: HU-IE-15-01, HU-IE-15-02, HU-IE-15-03, HU-IE-16 | Total términos: 46*
+*Última actualización: 2026-03-05 | HU procesadas: HU-IE-15-01, HU-IE-15-02, HU-IE-15-03, HU-IE-16, HU-IE-17, HU-IE-18 | Total términos: 52*
