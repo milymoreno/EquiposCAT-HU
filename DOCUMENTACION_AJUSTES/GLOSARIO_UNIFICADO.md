@@ -12,8 +12,7 @@
 | HU-IE-15-01 | Sincronización Automática | A, B, C, D, E, G, I, J, L, M, N, O, P, S, T, V | ✅ Completada |
 | HU-IE-15-02 | Consulta y Validación | A, B, C, E, f, G, I, M, P, R, S | ✅ Completada |
 | HU-IE-15-03 | Creación de Proveedores | C, D, E, M, P, S, T, V | ✅ Completada |
-| HU-IE-16 | Integración con Logística | — | 🔜 Pendiente |
-E, I, P, V | ✅ Completada |
+| HU-IE-16 | Integración con Logística | B, D, G, P | ✅ Completada |
 | HU-IE-17 | Asignación de Registro/Licencia de Importación | — | 🔜 Pendiente |
 | HU-IE-18 | Generación de Documento de Transporte | — | 🔜 Pendiente |
 | HU-IE-19 | Ingreso de Costos de Nacionalización | — | 🔜 Pendiente |
@@ -31,6 +30,9 @@ Es el "canal oficial" por el que dos sistemas se comunican entre sí. En este pr
 ---
 
 ## B
+
+### BL (Bill of Lading)
+- **BL (Bill of Lading):** Título de propiedad de la mercancía durante transporte. (HU-IE-16)
 
 ### BL (Bill of Lading) — Conocimiento de Embarque
 Documento que emite la naviera certificando que la mercancía fue embarcada en el barco. Es como la "partida de nacimiento" del embarque marítimo: identifica qué viene, cuánto pesa, quién lo envía y quién lo recibe. Es la llave principal para iniciar los procesos de nacionalización.  
@@ -66,6 +68,9 @@ Código que identifica a cada empresa del grupo en D365. Ejemplo: GColza = `001`
 
 ## D
 
+### Dealer (Distribuidor/Destino)
+- **Dealer (Distribuidor/Destino):** Código técnico que identifica el destino final o puerto de llegada (ej: R490). (HU-IE-16)
+
 ### D365 / Dynamics 365
 Sistema ERP (Enterprise Resource Planning) de Microsoft que usa la empresa para gestionar facturas, proveedores, órdenes de compra y toda la información financiera y de compras. Es el sistema fuente del que el SII recibe información. Cuando se dice "viene de D365", el dato fue creado o procesado allí.  
 📌 *Aplica a: todas las HUs*
@@ -99,6 +104,9 @@ Documento maestro que agrupa varias facturas bajo un mismo BL. Es la unidad de p
 ---
 
 ## G
+
+### Guía
+- **Guía:** Número identificador del viaje de la mercancía (sinónimo de BL). (HU-IE-16)
 
 ### GColza / Gecolsa
 Compañía del grupo que distribuye los equipos CAT en Colombia. Opera con el código de compañía `001` en D365. Es uno de los actores cuyos proveedores y facturas se sincronizan al SII.  
@@ -179,6 +187,9 @@ Sistema externo (de la agencia de aduanas) al que el SII transmite las declaraci
 ---
 
 ## P
+
+### Puerto de Llegada
+- **Puerto de Llegada:** Lugar físico de recepción, asignado automáticamente por el Dealer. (HU-IE-16)
 
 ### Proveedor / Exportador
 Empresa que vende y exporta los equipos CAT. En este proceso, el proveedor principal es Caterpillar Inc. y sus subsidiarias. Se identifica por su código D365 (6 dígitos). El término "exportador" también se usa para referirse al proveedor en el contexto del embarque.  
