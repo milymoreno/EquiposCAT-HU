@@ -13,11 +13,17 @@
 | HU-IE-15-02 | Consulta y Validación | A, B, C, E, f, G, I, M, P, R, S | ✅ Completada |
 | HU-IE-15-03 | Creación de Proveedores | C, D, E, M, P, S, T, V | ✅ Completada |
 | HU-IE-16 | Integración con Logística | B, D, G, P | ✅ Completada |
-| HU-IE-17 | Asignación de Registro/Licencia de Importación | — | 🔜 Pendiente |
+| HU-IE-17 | Asignación de Registro/Licencia | C, L, R, S, V | ✅ Completada |
 | HU-IE-18 | Generación de Documento de Transporte | — | 🔜 Pendiente |
 | HU-IE-19 | Ingreso de Costos de Nacionalización | — | 🔜 Pendiente |
 | HU-IE-20 | Registro y Persistencia de Tipificación (DI/DAV) | — | 🔜 Pendiente |
 | HU-IE-22 | Consolidación Final de Costos y Envío a D365 | — | 🔜 Pendiente |
+
+---
+
+## R
+### Remanufacturado (Reman)
+- **Remanufacturado (Reman):** Equipo reconstruido que requiere permisos especiales. (HU-IE-17)
 
 ---
 
@@ -41,6 +47,9 @@ Documento que emite la naviera certificando que la mercancía fue embarcada en e
 ---
 
 ## C
+
+### Consumo Atómico
+- **Consumo Atómico:** Operación que se completa 100% o se anula para evitar errores de saldo. (HU-IE-17)
 
 ### Cargos (en D365)
 Costos adicionales que se asignan a una factura en D365 al momento de registrarla: fletes, seguros, transporte terrestre (INLAND), entre otros. Dependen del INCOTERM pactado con el proveedor. Se sincronizan junto con la factura al SII para calcular el costo total de importación del equipo.  
@@ -150,6 +159,9 @@ Tarea automática programada que el sistema ejecuta periódicamente sin que nadi
 
 ## L
 
+### Licencia de Importación (VUCE)
+- **Licencia de Importación (VUCE):** Permiso oficial para importar mercancía controlada. (HU-IE-17)
+
 ### Log de Sincronización
 Registro automático que guarda todo lo ocurrido durante cada ejecución del proceso de sincronización: cuántas facturas llegaron, cuántas se insertaron, cuántas se rechazaron y por qué. Sirve para auditoría, detección de problemas y trazabilidad operativa.  
 📌 *Aplica a: HU-IE-15-01*
@@ -199,6 +211,9 @@ Empresa que vende y exporta los equipos CAT. En este proceso, el proveedor princ
 
 ## S
 
+### Saldo de Licencia
+- **Saldo de Licencia:** Cantidad restante permitida para importar. (HU-IE-17)
+
 ### SII / SII 2.0
 Sistema de Información de Importaciones. Sistema propio que gestiona los procesos de comercio exterior: embarques, declaraciones de importación, registro de licencias, consulta de facturas, etc. Recibe la información de D365 y la usa para gestionar los trámites de importación de equipos CAT.  
 **Versión anterior:** S400 / SII v1 (sistema legado en reemplazo).  
@@ -233,6 +248,9 @@ Quando un sistema corta un texto por tener límite de caracteres. Ejemplo: OC "A
 ---
 
 ## V
+
+### VUCE
+- **VUCE:** Ventanilla Única de Comercio Exterior para trámites legales. (HU-IE-17)
 
 ### Vendor Account
 Ver: **Código Proveedor D365 / Vendor Account (6 dígitos)**.  
